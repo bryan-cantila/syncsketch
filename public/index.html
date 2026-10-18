@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SyncSketch — draw together, live</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="brand">
+    <div class="logo-mark" aria-hidden="true">
+      <svg viewBox="0 0 48 48" width="44" height="44"><path d="M8 34 C14 20 24 14 38 12" stroke="#FF6115" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M30 8 L40 11 L37 21" stroke="#111" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="36" r="4" fill="#111"/></svg>
+    </div>
+    <h1>SyncSketch</h1>
+    <p class="tagline">A real-time whiteboard. No accounts, no installs — just draw together.</p>
+  </header>
+
+  <section class="card">
+    <h2>Join a room</h2>
+    <label>Your nickname
+      <input id="name" type="text" maxlength="32" placeholder="e.g. sketchfan" autocomplete="off">
+    </label>
+    <label>Room code
+      <input id="room" type="text" maxlength="24" placeholder="e.g. team-doodle" autocomplete="off">
+    </label>
+    <div class="row">
+      <button id="join" class="btn primary">Join room</button>
+      <button id="create" class="btn">New random room</button>
+    </div>
+    <p class="hint">Share the room code with a friend — everything they draw appears on your canvas instantly over WebSockets.</p>
+  </section>
+
+  <footer>SyncSketch · real-time rooms over raw WebSockets · Created by <a href="https://www.devuvo.com">devuvo</a></footer>
+</main>
+<script>
+(function () {
+  var nameEl = document.getElementById('name');
+  var roomEl = document.getElementById('room');
+  var saved = null;
+  try { saved = localStorage.getItem('syncsketch_name'); } catch (e) {}
+  if (saved) nameEl.value = saved;
+
+  function go(room) {
+    var name = nameEl.value.trim();
+    if (!name) { nameEl.focus(); nameEl.classList.add('shake'); setTimeout(function(){nameEl.classList.remove('shake');}, 400); return; }
+    if (!/^[A-Za-z0-9_-]{1,24}$/.test(room)) { roomEl.focus(); roomEl.classList.add('shake'); setTimeout(function(){roomEl.classList.remove('shake');}, 400); return; }
+    try { localStorage.setItem('syncsketch_name', name); } catch (e) {}
+    location.href = 'board.html?room=' + encodeURIComponent(room) + '&name=' + encodeURIComponent(name);
+  }
+
+  document.getElementById('join').addEventListener('click', function () { go(roomEl.value.trim()); });
+  document.getElementById('create').addEventListener('click', function () {
+    var code = 'room-' + Math.random().toString(36).slice(2, 8);
+    roomEl.value = code;
+    go(code);
+  });
+  roomEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') go(roomEl.value.trim()); });
+})();
+</script>
+</body>
+</html>

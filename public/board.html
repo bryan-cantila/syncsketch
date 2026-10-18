@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SyncSketch — board</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="board-page">
+<header class="toolbar">
+  <a class="brand-mini" href="index.html" title="Back to lobby">
+    <svg viewBox="0 0 48 48" width="28" height="28"><path d="M8 34 C14 20 24 14 38 12" stroke="#FF6115" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M30 8 L40 11 L37 21" stroke="#111" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="36" r="4" fill="#111"/></svg>
+    <span>SyncSketch</span>
+  </a>
+  <div class="room-pill" id="roomPill" title="Click to copy invite link">room: …</div>
+  <div class="tools" role="toolbar" aria-label="Drawing tools">
+    <div class="swatches" id="swatches" aria-label="Colors"></div>
+    <div class="widths" id="widths" aria-label="Brush sizes">
+      <button data-w="3" aria-label="Thin"><span class="dot" style="width:6px;height:6px"></span></button>
+      <button data-w="7" class="on" aria-label="Medium"><span class="dot" style="width:11px;height:11px"></span></button>
+      <button data-w="14" aria-label="Thick"><span class="dot" style="width:17px;height:17px"></span></button>
+    </div>
+    <button id="eraser" class="tool" title="Eraser">⌫</button>
+    <button id="clear" class="tool danger" title="Clear board for everyone">Clear</button>
+  </div>
+  <div class="presence">
+    <div id="users" class="users"></div>
+    <div id="status" class="status">connecting…</div>
+  </div>
+</header>
+
+<main class="canvas-wrap">
+  <canvas id="board"></canvas>
+  <div id="cursors"></div>
+</main>
+
+<footer class="board-foot">Live room · strokes sync over WebSockets · Created by <a href="https://www.devuvo.com">devuvo</a></footer>
+
+<script src="app.js"></script>
+</body>
+</html>
